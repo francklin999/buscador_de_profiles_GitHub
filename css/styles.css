@@ -1,0 +1,30 @@
+body { font-family: Arial, Helvetica, sans-serif; background: rgb(104, 104, 104); color: white; } 
+
+.mainContainer { display: table; width: 100%; } 
+
+.centralizar { display: table-cell; text-align: center; vertical-align: middle; } 
+
+.marginAuto { max-width: 665px; margin: 0 auto; } 
+
+ul { list-style-type: none; padding-left: 5px; margin: 0px; } 
+li { margin-bottom: 5px; } 
+
+#card { width: 300px; margin-top: 20px; box-shadow: 5px 5px 10px; background: white; color: black; } 
+
+#perfil { width: 300px;margin-left: 182px;} 
+#imgP { width: 300px; } 
+
+#dados { text-align: left; } 
+
+#vlInput { height: 30px; } 
+
+#buscar { height: 35px; } 
+
+.fifth { border-color: #ffffff; color: #ffffff; position: relative; overflow: hidden; z-index: 1; -webkit-transition: color 150ms ease-in-out; transition: color 150ms ease-in-out; } 
+.fifth:after {  content: ''; position: absolute; display: block; top: 0; left: 50%; -webkit-transform: translateX(-50%); transform: translateX(-50%); width: 0; height: 100%; background: #ffffff; z-index: -1; -webkit-transition: width 150ms ease-in-out; transition: width 150ms ease-in-out; } 
+.fifth:hover { color: rgb(255, 255, 255); } 
+.fifth:hover:after { width: 110%; } 
+
+
+.btn { box-sizing: border-box; background-color: transparent; border: 2px solid #ffffff; color: #000000; cursor: pointer; text-align: center; text-transform: uppercase; } 
+.btn:hover, .btn:focus { color: rgb(0, 0, 0); outline: 0; } 
