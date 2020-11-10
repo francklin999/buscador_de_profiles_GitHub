@@ -1,10 +1,19 @@
 let buscar = document.querySelector('#buscar');
 let vlInput = document.querySelector('#vlInput');
 let perfil = document.querySelector('#perfil');
+let body = document.querySelector('body');
 
-
+body.addEventListener('keyup', e =>{
+    if (e.keyCode === 13) {
+        return consomeAPI();
+    }
+})
 
 buscar.addEventListener('click', () => {
+ return consomeAPI();
+})
+
+const consomeAPI = () =>{
     let config = {
         method: "GET"
     }
@@ -51,4 +60,4 @@ buscar.addEventListener('click', () => {
 
     })
     }
-})
+}
