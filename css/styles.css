@@ -11,11 +11,21 @@ li { margin-bottom: 5px;}
 span{
     color: red;
 }
+a{
+    text-decoration: none;
+    color: black;
+}
+#dadosSimples{
+    position: absolute;
+    text-align: left;
+    left: 310px;
+    top: 0px;
+}
 
-#card { width: 300px; margin-top: 20px; box-shadow: 5px 5px 10px; background: white; color: black; } 
+#card { position: relative; width: 100%; margin-top: 20px; box-shadow: 5px 5px 10px; background: white; color: black; } 
 
-#perfil { width: 300px;margin-left: 182px;} 
-#imgP { width: 300px; } 
+#perfil { width: 100%;margin-left: 0px;} 
+img { width: 300px;box-shadow: 5px 5px 10px; margin-left:-365px; margin-bottom: 10px;} 
 
 #dados { text-align: left; } 
 
@@ -23,11 +33,12 @@ span{
 
 #buscar { height: 35px; } 
 
-.fifth { border-color: #ffffff; color: #ffffff; position: relative; overflow: hidden; z-index: 1; -webkit-transition: color 150ms ease-in-out; transition: color 150ms ease-in-out; } 
+.fifth { border-color: #ffffff; color: #000000; position: relative; overflow: hidden; z-index: 1; -webkit-transition: color 150ms ease-in-out; transition: color 150ms ease-in-out; } 
 .fifth:after {  content: ''; position: absolute; display: block; top: 0; left: 50%; -webkit-transform: translateX(-50%); transform: translateX(-50%); width: 0; height: 100%; background: #ffffff; z-index: -1; -webkit-transition: width 150ms ease-in-out; transition: width 150ms ease-in-out; } 
 .fifth:hover { color: rgb(255, 255, 255); } 
 .fifth:hover:after { width: 110%; } 
 
+button:focus{box-sizing: border-box; background-color: transparent; border: 2px solid #ffffff; color: #ffffff; cursor: pointer; text-align: center; text-transform: uppercase;}
 
-.btn { box-sizing: border-box; background-color: transparent; border: 2px solid #ffffff; color: #000000; cursor: pointer; text-align: center; text-transform: uppercase; } 
+.btn { box-sizing: border-box; background-color: transparent; border: 2px solid #ffffff; color: #ffffff; cursor: pointer; text-align: center; text-transform: uppercase; } 
 .btn:hover, .btn:focus { color: rgb(0, 0, 0); outline: 0; } 
