@@ -1,18 +1,13 @@
 let buscar = document.querySelector('#buscar');
 let vlInput = document.querySelector('#vlInput');
 let perfil = document.querySelector('#perfil');
-let body = document.querySelector('body');
+const URL = 'https://api.github.com/users/';
 
-
-window.onkeyup = (e) =>{
-    if (vlInput.value === 'USUARIO NÃO ENCONTRADO') {
-        vlInput.value = '';
-        vlInput.style.background = "white";
-    }
+vlInput.addEventListener('keyup', (e) => {
     if (e.keyCode === 13) {
-        return ajaxApi('https://api.github.com/users/' + vlInput.value);
+        return ajaxApi(URL + vlInput.value);
     }
-}
+})
 
 vlInput.addEventListener('focus', () => {
     if (vlInput.value === 'USUARIO NÃO ENCONTRADO') {
@@ -21,9 +16,9 @@ vlInput.addEventListener('focus', () => {
     }
 })
 
-buscar.addEventListener('click', () => {
-    ajaxApi('https://api.github.com/users/' + vlInput.value)
 
+buscar.addEventListener('click', () => {
+    ajaxApi(URL + vlInput.value)
 })
 
 
@@ -51,13 +46,13 @@ const montaCard = (dados) => {
     perfil.innerHTML = `
     <a href="${dados.html_url === null ? 'Dados não encontrados' : dados.html_url}" target="_blank">
     <div id=card>
-        <img src="${dados.avatar_url}" alt="avatar"  title="${dados.name}">
+        <img id="imgPerfil" src="${dados.avatar_url}" alt="avatar"  title="${dados.name}">
         <ul id="dadosSimples">
         <li>Login: <span>${dados.login === null ? 'Dados não encontrados' : dados.login}</span></li>
             <li>Nome: <span>${dados.name === null ? 'Dados não encontrados' : dados.name}</span></li>
             <li>Localização: <span>${dados.location === null ? 'Dados não encontrados' : dados.location}</span></li>
             <li>Twitter: <span>${dados.twitter_username === null ? 'Dados não encontrados' :
-                    dados.twitter_username}</span></li>
+            dados.twitter_username}</span></li>
             <li>Blog: <span>${dados.blog === null ? 'Dados não encontrados' : dados.blog}</span></li>
             <li>Email: <span>${dados.email === null ? 'Dados não encontrados' : dados.email}</span></li>
             <li>Seguidores: <span>${dados.followers === null ? 'Dados não encontrados' : dados.followers}</span></li>
@@ -82,4 +77,5 @@ const tratamentoERRO = () => {
     vlInput.value = '';
     vlInput.value = 'USUARIO NÃO ENCONTRADO';
     vlInput.style.background = 'red';
+    perfil.innerHTML = '';
 }
