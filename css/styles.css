@@ -22,7 +22,7 @@ a { text-decoration: none; color: black; }
 #vlInput { height: 30px; width: 200px; } 
 
 #bsc { color: white; } 
-
+#bsc:hover {color: var(--dp-bg-teste);}
 #buscar { height: 35px; } 
 
 .fifth { border-color: #ffffff; color: #000000; position: relative; overflow: hidden; z-index: 1; -webkit-transition: color 150ms ease-in-out; transition: color 150ms ease-in-out; } 
@@ -31,4 +31,4 @@ a { text-decoration: none; color: black; }
 .fifth:hover:after { width: 110%; } 
 
 .btn { box-sizing: border-box; background-color: transparent; border: 2px solid #ffffff; color: #ffffff; cursor: pointer; text-align: center; text-transform: uppercase; } 
-.btn:hover, .btn:focus, #bsc:hover { color: rgb(0, 0, 0); outline: 0; } 
+.btn:hover, .btn:focus{ color: rgb(0, 0, 0); outline: 0; --dp-bg-teste: black; } 

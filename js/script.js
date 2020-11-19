@@ -1,81 +1,160 @@
-let buscar = document.querySelector('#buscar');
-let vlInput = document.querySelector('#vlInput');
-let perfil = document.querySelector('#perfil');
 const URL = 'https://api.github.com/users/';
 
-vlInput.addEventListener('keyup', (e) => {
-    if (e.keyCode === 13) {
-        return ajaxApi(URL + vlInput.value);
+document.querySelector('#vlInput').addEventListener('keyup', (input) => {
+    let perfil = document.querySelector('#perfil')
+    if (input.keyCode === 13) {
+        return ajaxApi(URL + input.target.value, input.target, perfil);
     }
 })
 
-vlInput.addEventListener('focus', () => {
-    if (vlInput.value === 'USUARIO NÃO ENCONTRADO') {
-        vlInput.value = '';
-        vlInput.style.background = "white";
+document.querySelector('#vlInput').addEventListener('focus', (e) => {
+    limpaInput(e);
+})
+
+const limpaInput = (e) => {
+    if (e.target.value === 'USUARIO NÃO ENCONTRADO') {
+        e.target.value = '';
+        e.target.style.background = "white";
     }
-})
-
-
-buscar.addEventListener('click', () => {
-    ajaxApi(URL + vlInput.value)
-})
-
-
-const ajaxApi = (urlChamada) => {
-    let config = { method: "GET" }
-
-    fetch(urlChamada, config)
-        .then((resposta) => {
-            if (resposta.ok) {
-                return resposta.json()
-            }
-        })
-        .then(dados => montaCard(dados))
-        .catch(() => tratamentoERRO())
 }
 
+document.querySelector('#buscar').addEventListener('click', () => {
+    let perfil = document.querySelector('#perfil')
+    let vlInput = document.querySelector('#vlInput')
+    ajaxApi(URL + vlInput.value, vlInput, perfil)
+})
 
-const montaCard = (dados) => {
 
-    let data = new Date(dados.updated_at);
+const ajaxApi = (urlChamada, input, perfil) => {
+    let config = { method: "GET" }
+    fetch(urlChamada, config)
+        .then((resposta) => {
+            if (resposta.status === 200) {
+                resposta.json().then(dados => mapearArray(dados, perfil))
+                // return resposta.json().then(dados => montaCard(dados, perfil))
+            } else {
+                return tratamentoERRO(resposta, input, perfil)
+            }
+        })
+}
+
+const mapearArray = (obj, perfil) => {
+    let array = []
+    array.push(obj)
+    array.map(e => {
+        array.pop()
+        array.push(Object.entries(e).map(el => el[1] === null || el[1] === '' ? el[1] = 'Dados não encontrados' : el[1]))
+    })
+    montaCard(array[0], perfil)
+}
+
+const montaCard = (dados, perfil) => {
+    let data = new Date(dados[31]);
     let ultAtualizacao = ((data.getDate()) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear());
-    let dataC = new Date(dados.created_at);
+    let dataC = new Date(dados[30]);
     let criado = ((dataC.getDate()) + "/" + ((dataC.getMonth() + 1)) + "/" + dataC.getFullYear());
 
-    perfil.innerHTML = `
-    <a href="${dados.html_url === null ? 'Dados não encontrados' : dados.html_url}" target="_blank">
-    <div id=card>
-        <img id="imgPerfil" src="${dados.avatar_url}" alt="avatar"  title="${dados.name}">
-        <ul id="dadosSimples">
-        <li>Login: <span>${dados.login === null ? 'Dados não encontrados' : dados.login}</span></li>
-            <li>Nome: <span>${dados.name === null ? 'Dados não encontrados' : dados.name}</span></li>
-            <li>Localização: <span>${dados.location === null ? 'Dados não encontrados' : dados.location}</span></li>
-            <li>Twitter: <span>${dados.twitter_username === null ? 'Dados não encontrados' :
-            dados.twitter_username}</span></li>
-            <li>Blog: <span>${dados.blog === null ? 'Dados não encontrados' : dados.blog}</span></li>
-            <li>Email: <span>${dados.email === null ? 'Dados não encontrados' : dados.email}</span></li>
-            <li>Seguidores: <span>${dados.followers === null ? 'Dados não encontrados' : dados.followers}</span></li>
-            <li>Seguindo: <span>${dados.following === null ? 'Dados não encontrados' : dados.following}</span></li>
-            <li>Criado: <span>${criado === null ? 'Dados não encontrados' : criado}</span></li>
-            <li>Última atualização: <span>${ultAtualizacao === null ? 'Dados não encontrados' : ultAtualizacao}</span>
-            </li>
-            <li>Companhia: <span>${dados.company === null ? 'Dados não encontrados' : dados.company}</span></li>
-            <li>Repositórios: <span>${dados.public_repos === null ? 'Dados não encontrados' : dados.public_repos}</span>
-            </li>
-            <li>URL: <span>${dados.html_url === null ? 'Dados não encontrados' : dados.html_url}</span> </li>
-        </ul>
-        <ul id="dados">
-            <li>Bio: <span>${dados.bio === null ? 'Dados não encontrados' : dados.bio}</span></li>
-        </ul>
+    perfil.innerHTML =
+        `
+        <a href="${dados[6]}" target="_blank">
+        <div id=card>
+            <img id="imgPerfil" src="${dados[3]}" alt="avatar" title="${dados[18]}">
+            <ul id="dadosSimples">
+                <li>Login: <span>${dados[0]}</span></li>
+                <li>Nome: <span>${dados[18]}</span></li>
+                <li>Localização: <span>${dados[21]}</span></li>
+                <li>Twitter: <span>${dados[25]}</span></li>
+                <li>Blog: <span>${dados[20]}</span></li>
+                <li>Email: <span>${dados[22]}</span></li>
+                <li>Seguidores: <span>${dados[28]}</span></li>
+                <li>Seguindo: <span>${dados[29]}</span></li>
+                <li>Criado: <span>${criado}</span></li>
+                <li>Última atualização: <span>${ultAtualizacao}</span>
+                </li>
+                <li>Companhia: <span>${dados[19]}</span></li>
+                <li>Repositórios: <span>${dados[26]}</span>
+                </li>
+                <li>URL: <span>${dados[6]}</span> </li>
+            </ul>
+            <ul id="dados">
+                <li>Bio: <span>${dados[24]}</span></li>
+            </ul>
         </div>
-        </a>
+    </a>
 `
 }
 
-const tratamentoERRO = () => {
-    vlInput.value = '';
-    vlInput.value = 'USUARIO NÃO ENCONTRADO';
-    vlInput.style.background = 'red';
-    perfil.innerHTML = '';
+
+
+
+
+const tratamentoERRO = (e, input, perfil) => {
+    console.log('tratamento de erro', e)
+    switch (e.status) {
+        case 404:
+            input.value = '';
+            input.value = 'USUARIO NÃO ENCONTRADO';
+            input.style.background = 'red';
+            perfil.style.color = "red"
+            perfil.style.marginTop = "20px"
+            perfil.innerHTML = `Status: ${e.status} Mensagem: ${e.statusText}`;
+            break;
+        case 304:
+            input.value = '';
+            input.value = 'NÃO MODIFICADO';
+            input.style.background = 'red';
+            perfil.style.color = "red"
+            perfil.style.marginTop = "20px"
+            perfil.innerHTML = `Status: ${e.status} Mensagem: ${e.statusText}`;
+            break;
+        case 422:
+            input.value = '';
+            input.value = 'NÃO PROCESSÁVEL';
+            input.style.background = 'red';
+            perfil.style.color = "red"
+            perfil.style.marginTop = "20px"
+            perfil.innerHTML = `Status: ${e.status} Mensagem: ${e.statusText}`;
+            break;
+        case 301:
+            input.value = '';
+            input.value = 'MOVIDO PERMANENTEMENTE';
+            input.style.background = 'red';
+            perfil.style.color = "red"
+            perfil.style.marginTop = "20px"
+            perfil.innerHTML = `Status: ${e.status} Mensagem: ${e.statusText}`;
+            break;
+        case 403:
+            input.value = '';
+            input.value = 'ACESSO NEGADO';
+            input.style.background = 'red';
+            perfil.style.color = "red"
+            perfil.style.marginTop = "20px"
+            perfil.innerHTML = `Status: ${e.status} Mensagem: ${e.statusText}`;
+            break;
+        case 503:
+            input.value = '';
+            input.value = 'SERVIÇO INDISPONÍVEL';
+            input.style.background = 'red';
+            perfil.style.color = "red"
+            perfil.style.marginTop = "20px"
+            perfil.innerHTML = `Status: ${e.status} Mensagem: ${e.statusText}`;
+            break;
+        case 410:
+            input.value = '';
+            input.value = 'INDISPONÍVEL PERMANENTEMENTE';
+            input.style.background = 'red';
+            perfil.style.color = "red"
+            perfil.style.marginTop = "20px"
+            perfil.innerHTML = `Status: ${e.status} Mensagem: ${e.statusText}`;
+            break;
+        case 204:
+            input.value = '';
+            input.value = 'SEM CONTEÚDO';
+            input.style.background = 'red';
+            perfil.style.color = "red"
+            perfil.style.marginTop = "20px"
+            perfil.innerHTML = `Status: ${e.status} Mensagem: ${e.statusText}`;
+            break;
+    }
+
 }
