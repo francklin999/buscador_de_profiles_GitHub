@@ -1,9 +1,8 @@
 const URL = 'https://api.github.com/users/';
 
 document.querySelector('#vlInput').addEventListener('keyup', (input) => {
-    let perfil = document.querySelector('#perfil')
     if (input.keyCode === 13) {
-        return ajaxApi(URL + input.target.value, input.target, perfil);
+        return ajaxApi(URL + input.target.value, input.target);
     }
 })
 
@@ -19,65 +18,54 @@ const limpaInput = (e) => {
 }
 
 document.querySelector('#buscar').addEventListener('click', () => {
-    let perfil = document.querySelector('#perfil')
     let vlInput = document.querySelector('#vlInput')
-    ajaxApi(URL + vlInput.value, vlInput, perfil)
+    ajaxApi(URL + vlInput.value, vlInput)
 })
 
 
-const ajaxApi = (urlChamada, input, perfil) => {
+const ajaxApi = (urlChamada, input) => {
     let config = { method: "GET" }
     fetch(urlChamada, config)
         .then((resposta) => {
             if (resposta.status === 200) {
-                resposta.json().then(dados => mapearArray(dados, perfil))
-                // return resposta.json().then(dados => montaCard(dados, perfil))
+                resposta.json().then(dados => montaCard(dados))
             } else {
-                return tratamentoERRO(resposta, input, perfil)
+                return tratamentoERRO(resposta, input)
             }
         })
 }
 
-const mapearArray = (obj, perfil) => {
-    let array = []
-    array.push(obj)
-    array.map(e => {
-        array.pop()
-        array.push(Object.entries(e).map(el => el[1] === null || el[1] === '' ? el[1] = 'Dados não encontrados' : el[1]))
-    })
-    montaCard(array[0], perfil)
-}
+const mapearArray = (obj) => Object.entries(obj).map(el => el[1] === null || el[1] === '' ? el[1] = 'Dados não encontrados' : el[1])
 
-const montaCard = (dados, perfil) => {
-    let data = new Date(dados[31]);
-    let ultAtualizacao = ((data.getDate()) + "/" + ((data.getMonth() + 1)) + "/" + data.getFullYear());
-    let dataC = new Date(dados[30]);
-    let criado = ((dataC.getDate()) + "/" + ((dataC.getMonth() + 1)) + "/" + dataC.getFullYear());
+const montaCard = (dados) => {
+    let resposta = mapearArray(dados)
+    let ultAtualizacao = ((new Date(resposta[31]).getDate()) + "/" + ((new Date(resposta[31]).getMonth() + 1)) + "/" + new Date(resposta[31]).getFullYear());
+    let criado = ((new Date(resposta[30]).getDate()) + "/" + ((new Date(resposta[30]).getMonth() + 1)) + "/" + new Date(resposta[30]).getFullYear());
 
-    perfil.innerHTML =
+    document.querySelector('#perfil').innerHTML =
         `
-        <a href="${dados[6]}" target="_blank">
+        <a href="${resposta[6]}" target="_blank">
         <div id=card>
-            <img id="imgPerfil" src="${dados[3]}" alt="avatar" title="${dados[18]}">
+            <img id="imgPerfil" src="${resposta[3]}" alt="avatar" title="${resposta[18]}">
             <ul id="dadosSimples">
-                <li>Login: <span>${dados[0]}</span></li>
-                <li>Nome: <span>${dados[18]}</span></li>
-                <li>Localização: <span>${dados[21]}</span></li>
-                <li>Twitter: <span>${dados[25]}</span></li>
-                <li>Blog: <span>${dados[20]}</span></li>
-                <li>Email: <span>${dados[22]}</span></li>
-                <li>Seguidores: <span>${dados[28]}</span></li>
-                <li>Seguindo: <span>${dados[29]}</span></li>
+                <li>Login: <span>${resposta[0]}</span></li>
+                <li>Nome: <span>${resposta[18]}</span></li>
+                <li>Localização: <span>${resposta[21]}</span></li>
+                <li>Twitter: <span>${resposta[25]}</span></li>
+                <li>Blog: <span>${resposta[20]}</span></li>
+                <li>Email: <span>${resposta[22]}</span></li>
+                <li>Seguidores: <span>${resposta[28]}</span></li>
+                <li>Seguindo: <span>${resposta[29]}</span></li>
                 <li>Criado: <span>${criado}</span></li>
                 <li>Última atualização: <span>${ultAtualizacao}</span>
                 </li>
-                <li>Companhia: <span>${dados[19]}</span></li>
-                <li>Repositórios: <span>${dados[26]}</span>
+                <li>Companhia: <span>${resposta[19]}</span></li>
+                <li>Repositórios: <span>${resposta[26]}</span>
                 </li>
-                <li>URL: <span>${dados[6]}</span> </li>
+                <li>URL: <span>${resposta[6]}</span> </li>
             </ul>
             <ul id="dados">
-                <li>Bio: <span>${dados[24]}</span></li>
+                <li>Bio: <span>${resposta[24]}</span></li>
             </ul>
         </div>
     </a>
@@ -85,11 +73,8 @@ const montaCard = (dados, perfil) => {
 }
 
 
-
-
-
-const tratamentoERRO = (e, input, perfil) => {
-    console.log('tratamento de erro', e)
+const tratamentoERRO = (e, input) => {
+    let perfil = document.querySelector('#perfil')
     switch (e.status) {
         case 404:
             input.value = '';
@@ -156,5 +141,4 @@ const tratamentoERRO = (e, input, perfil) => {
             perfil.innerHTML = `Status: ${e.status} Mensagem: ${e.statusText}`;
             break;
     }
-
 }

@@ -22,7 +22,7 @@ a { text-decoration: none; color: black; }
 #vlInput { height: 30px; width: 200px; } 
 
 #bsc { color: white; } 
-#bsc:hover {color: var(--dp-bg-teste);}
+#bsc {color: var(--dp-bg-teste);}
 #buscar { height: 35px; } 
 
 .fifth { border-color: #ffffff; color: #000000; position: relative; overflow: hidden; z-index: 1; -webkit-transition: color 150ms ease-in-out; transition: color 150ms ease-in-out; } 
